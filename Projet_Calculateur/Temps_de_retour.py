@@ -16,40 +16,39 @@ label_KW.grid(row = 1,column = 0, sticky = 'w')
 label = Label(root,text = "Le temps de retour est", font = 'arial', bg = 'white')
 label.grid(row = 7,column = 0, sticky = 'e')
 label_inv = Label(root , text = "Investissement total (en $) : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w')
-label_gain = Label(root , text = "Le gain annuel est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w')
-# label_KW_installed = Label(root , text = "Le nombre de KW installé est : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w')
+label_KW_installed = Label(root , text = "La capacité est : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w')
 
-prix = Label(root,text = "0.0$", font = 'arial', fg = 'red', bg = 'white')
+prix = Label(root,text = "0.0 année", font = 'arial', fg = 'red', bg = 'white')
 prix.grid(row = 7,column = 2, sticky = 'w')
 
 
 #Fonctions
 def Button(event):
-   inv.set()
-   gain.set()
+   prix_kwh.set(str(prix_du_kwh[drop.get()]))
+   kw_installed.set(str(Capacite[drop.get()]))
 
-def calcul_de_prix():
+
+def calcul():
    if(drop.get() == ''):
       messagebox.showerror(title = "Error", message = "Please select an energy source!")
    else:
       if(prix_kwh.get() == ''):
          prix_kwh.set(str(Prix_du_kw[drop.get()]))
-      if(gain.get() == ''):
-         messagebox.showerror('Division par 0', message="Le gain ne peut pas etre nul!")
+      if(kw_installed.get() == ''):
+         kw_installed.set(str(Capacite[drop.get()]))
       if(inv.get() == ''):
          messagebox.showerror('Erreur!', message= "Veuillez inserer l'invesstissement ")
-         # inv.set(str(float(prix_kwh.get())*float(kwh_installed.get())))
-      try:
-         prix['text'] = str(round(float(inv.get())/float(gain.get()))) + "$"
-      except ZeroDivisionError:
-         messagebox.showerror('Division par 0', message =  "Le gain ne peut pas etre nul!")
+      production = float(kw_installed.get())*8760*Coef_De_Charge[drop.get()]
+      gain = production *(prix_kwh_fuel - float(prix_kwh.get()))
+      TR = float(inv.get())/gain
+      prix['text'] = str("%.3f année."%TR)
+
 
 def reset():
    drop.set('')
-   gain.set('')
    inv.set('')
    prix_kwh.set('')
-   # kwh_installed.set('')
+   kw_installed.set('')
 
 
 
@@ -61,19 +60,18 @@ drop.bind('<<ComboboxSelected>>', Button)
 
 #variable
 inv = StringVar()
-gain = StringVar()
 prix_kwh = StringVar()
-kwh_installed = StringVar()
+kw_installed = StringVar()
 
 
 #Input labels
 inv_input = tk.Entry(root, width = 30, textvariable = inv).grid(row = 3, column = 2, columnspan = 2)
-gain_input = tk.Entry(root, width = 30, textvariable = gain).grid(row = 4, column = 2, columnspan = 2)
+# gain_input = tk.Entry(root, width = 30, textvariable = gain).grid(row = 4, column = 2, columnspan = 2)
 kw_input = tk.Entry(root, width = 30, textvariable = prix_kwh).grid(row = 1, column = 2, columnspan = 2)
-kw_installed_input = tk.Entry(root, width = 30, textvariable = kwh_installed).grid(row = 2, column = 2, columnspan = 2)
+kw_installed_input = tk.Entry(root, width = 30, textvariable = kw_installed).grid(row = 2, column = 2, columnspan = 2)
 
 #buttons
-button = ttk.Button( root , text = "Calcul" ).grid(row = 6, column = 3)
+button = ttk.Button( root , text = "Calcul", command = calcul ).grid(row = 6, column = 3)
 reset_btn = ttk.Button(root, text = "Reset", command = reset).grid(row = 6, column = 2)
 
 
