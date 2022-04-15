@@ -50,14 +50,15 @@ def graphe():
         plot_window = tk.Tk()
         plot_window.title("Emission de CO2")
         co2 = float("%.3f" % float(emission_CO2.get()))
-        data = {
-            'Heavy-Fuel':Emission_CO2["Heavy-Fuel"],
-            "Diesel oil":Emission_CO2["Diesel oil"],
-            "Natural Gas" : Emission_CO2["Natural Gas"],
-            drop.get(): co2
-        }
-        energies = data.keys()
-        emission = data.values()
+        energies= []
+        emissions = []
+        for i in Emission_CO2.keys():
+            if(i != drop.get()):
+                energies.append(i)
+                emissions.append(Emission_CO2[i] * float(energie.get()))
+
+        energies.append(drop.get())
+        emissions.append(co2)
         # create a figure
         figure = Figure(figsize=(6, 4), dpi=100)
         # create FigureCanvasTkAgg object
@@ -67,7 +68,7 @@ def graphe():
         # create axes
         axes = figure.add_subplot()
         # create the barchart
-        axes.bar(energies, emission)
+        axes.bar(energies, emissions)
         axes.set_title('Emission de CO2')
         axes.set_ylabel('Emission(Tonnes)')
 
