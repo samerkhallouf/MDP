@@ -1,4 +1,6 @@
+
 from Variables_Fixes import *
+
 
 
 #Root window
@@ -38,7 +40,10 @@ def calcul():
          messagebox.showerror('Erreur!', message= "Veuillez inserer l'invesstissement ")
       production = float(kw_installed.get())*8760*Coef_De_Charge[drop.get()]
       gain = production *(prix_du_kwh["Fuel-based"] - float(prix_kwh.get()))
-      TR.set(str(float((inv.get()))/gain))
+      facteur = 1- (float(inv.get())*(taux_croiss_eco/(1+taux_croiss_eco))/gain)
+      if(facteur <0):
+          messagebox.showerror("Le temps de retour ne peut pas etre calculer!")
+      TR.set(str(log(1-facteur)/log(1/(1+taux_croiss_eco))))
       prix['text'] = "%.3f année(s)."%float(TR.get())
 
 
@@ -101,5 +106,6 @@ button = ttk.Button( root , text = "Calcul", command = calcul ).grid(row = 6, co
 reset_btn = ttk.Button(root, text = "Reset", command = reset).grid(row = 6, column = 2)
 plot_btn = ttk.Button(root,text = "Graphe", command = graphe).grid(row = 6, column = 0, sticky = 'w')
 plot_btn_total = ttk.Button(root,text = "Comparaison ", command = Comparaison_TR).grid(row = 6, column = 1, sticky = 'w')
+
 
 root.mainloop()
