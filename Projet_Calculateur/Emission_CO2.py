@@ -4,7 +4,7 @@ from Variables_Fixes import *
 #Root window:
 root = tk.Tk()
 w = root.winfo_height
-root.geometry("450x150")
+root.geometry("600x200")
 root.title("Prix du KWh")
 root.configure(bg = 'white')
 
@@ -51,9 +51,9 @@ def graphe():
         plot_window.title("Emission de CO2")
         co2 = float("%.3f" % float(emission_CO2.get()))
         data = {
-            'Heavy-Fuel':Emission_CO2["Heavy-Fuel"],
-            "Diesel oil":Emission_CO2["Diesel oil"],
-            "Natural Gas" : Emission_CO2["Natural Gas"],
+            'Heavy-Fuel':Emission_CO2["Heavy-Fuel"]*float(energie.get()),
+            "Diesel oil":Emission_CO2["Diesel oil"]*float(energie.get()),
+            "Natural Gas" : Emission_CO2["Natural Gas"]*float(energie.get()),
             drop.get(): co2
         }
         energies = data.keys()

@@ -69,7 +69,7 @@ def Comparaison_CO2():
     # create the barchart
     axes.bar(energies, cout, color = ["green","green","green","green","red","red","yellow","green"])
     axes.set_title('Emission de CO2')
-    axes.set_ylabel('Emission(Tonnes)')
+    axes.set_ylabel('Emission(Tonnes/MWh produits)')
 
     figure_canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
