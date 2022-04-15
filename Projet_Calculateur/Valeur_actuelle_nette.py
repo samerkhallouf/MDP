@@ -20,7 +20,7 @@ valeur.grid(row = 7,column = 2, sticky = 'w')
 
 #Fonctions
 def Button(event):
-   kwh.set(str(prix_du_kwh[drop.get()]))
+   kwh.set(str(Prix_Du_KWh[drop.get()]))
    taux.set(taux_croiss_eco)
    inv.set(str(Investissement[drop.get()]))
 
@@ -30,7 +30,7 @@ def calcul_de_prix():
       messagebox.showerror(title = "Error", message = "Please select an energy source!")
    else:
       if(kwh.get() == ''):
-         kwh.set(str(prix_du_kwh[drop.get()]))
+         kwh.set(str(Prix_Du_KWh[drop.get()]))
       if(taux.get() == ''):
          taux.set(str(taux_croiss_eco))
       if(inv.get() == ''):
@@ -39,7 +39,7 @@ def calcul_de_prix():
          messagebox.showerror(title = "Error", message = "Please enter a capacity!")
       try:
          production=float(capacite.get())*24*365*Coef_De_Charge[drop.get()]
-         gain=production*(prix_du_kwh["Fuel-based"]-float(kwh.get()))
+         gain=production*(Prix_Du_KWh["Fuel-based"] - float(kwh.get()))
          facteur=(1-(1/(1+float(taux.get()))**31))/float(taux.get())
          van=gain*facteur-float(inv.get())
          valeur['text'] = str("%.3f" %van)

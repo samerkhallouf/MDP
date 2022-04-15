@@ -5,7 +5,7 @@ from Variables_Fixes import *
 root = tk.Tk()
 w = root.winfo_height
 root.geometry("450x175")
-root.title("Prix du KWh")
+root.title("Temps De Retour")
 root.configure(bg = 'white')
 
 #labels
@@ -22,7 +22,7 @@ prix.grid(row = 7,column = 2, sticky = 'w')
 
 #Fonctions
 def Button(event):
-   prix_kwh.set(str(prix_du_kwh[drop.get()]))
+   prix_kwh.set(str(Prix_Du_KWh[drop.get()]))
    kw_installed.set(str(Capacite[drop.get()]))
 
 
@@ -37,7 +37,7 @@ def calcul():
       if(inv.get() == ''):
          messagebox.showerror('Erreur!', message= "Veuillez inserer l'invesstissement ")
       production = float(kw_installed.get())*8760*Coef_De_Charge[drop.get()]
-      gain = production *(prix_du_kwh["Fuel-based"] - float(prix_kwh.get()))
+      gain = production *(Prix_Du_KWh["Fuel-based"] - float(prix_kwh.get()))
       TR.set(str(float((inv.get()))/gain))
       prix['text'] = "%.3f année(s)."%float(TR.get())
 

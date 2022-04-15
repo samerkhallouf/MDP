@@ -15,8 +15,7 @@ Coef_De_Charge = {'Photovoltaique':0.17, 'CSP': 0.90, 'Dechets':0.90, 'Eolienne 
 Prix_du_kw = {'Photovoltaique':1400, 'CSP': 9000, 'Dechets':15300, 'Eolienne offshore':8000}
 Duree_De_Vie = {'Photovoltaique':25, 'CSP': 27, 'Dechets':25, 'Eolienne offshore':17}
 Investissement = {'Photovoltaique':5400, 'CSP': 9000, 'Dechets':15300, 'Eolienne offshore':8000}
-Puissance = {'Photovoltaique':100, 'CSP': 130, 'Dechets':197, 'Eolienne offshore':600}
-prix_du_kwh = {'Photovoltaique':10, 'CSP': 12, 'Dechets':12, 'Eolienne offshore':11,"Fuel-based":0.20}
+Prix_Du_KWh = {'Photovoltaique':3.5, 'CSP': 19, 'Dechets':15.5, 'Eolienne offshore':10.5, "Fuel-based":28}
 Capacite = {'Photovoltaique':10, 'CSP': 12, 'Dechets':12, 'Eolienne offshore':11}
 taux_croiss_eco = 0.05
 Emission_CO2 = {'Photovoltaique':0.032, 'CSP': 0.032, 'Dechets':0.03, 'Eolienne offshore':0.001,"Heavy-Fuel":0.778,"Diesel oil":0.778,"Natural Gas":0.443,"Hydro":0.01}
@@ -26,8 +25,8 @@ def Comparaison_kwh():
     plot_window = tk.Tk()
     plot_window.geometry("700x300")
     plot_window.title("Prix du KWh de toutes les technologies")
-    energies = prix_du_kwh.keys()
-    cout = prix_du_kwh.values()
+    energies = Prix_Du_KWh.keys()
+    cout = Prix_Du_KWh.values()
 
     # create a figure
     figure = Figure(figsize=(6, 4), dpi=100)
