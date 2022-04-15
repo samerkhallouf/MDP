@@ -7,7 +7,7 @@ from Variables_Fixes import *
 root = tk.Tk()
 w = root.winfo_height
 root.geometry("450x175")
-root.title("Prix du KWh")
+root.title("Temps De Retour Actualisé")
 root.configure(bg = 'white')
 
 #labels

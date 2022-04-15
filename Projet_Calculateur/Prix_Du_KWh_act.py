@@ -5,7 +5,7 @@ from Variables_Fixes import *
 root = tk.Tk()
 w = root.winfo_height
 root.geometry("550x200")
-root.title("Prix du KWh")
+root.title("Prix du KWh actualisé")
 root.configure(bg = 'white')
 frame = Frame(root).grid(row = 0, column = 0)
 
