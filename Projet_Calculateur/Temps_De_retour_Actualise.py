@@ -43,8 +43,10 @@ def calcul():
       facteur = 1- (float(inv.get())*(taux_croiss_eco/(1+taux_croiss_eco))/gain)
       if(facteur <0):
           messagebox.showerror("Le temps de retour ne peut pas etre calculer!")
-      TR.set(str(log(1-facteur)/log(1/(1+taux_croiss_eco))))
-      prix['text'] = "%.3f année(s)."%float(TR.get())
+          exit(1)
+      else:
+         TR.set(str(log(1-facteur)/log(1/(1+taux_croiss_eco))))
+         prix['text'] = "%.3f année(s)."%float(TR.get())
 
 
 def reset():
