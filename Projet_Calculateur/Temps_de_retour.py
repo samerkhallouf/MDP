@@ -37,7 +37,9 @@ def calcul():
       if(inv.get() == ''):
          messagebox.showerror('Erreur!', message= "Veuillez inserer l'invesstissement ")
       production = float(kw_installed.get())*8760*Coef_De_Charge[drop.get()]
+      print(production)
       gain = production *(Prix_Du_KWh["Fuel-based"] - float(prix_kwh.get()))
+      print(gain)
       TR.set(str(float((inv.get()))/gain))
       prix['text'] = "%.3f année(s)."%float(TR.get())
 

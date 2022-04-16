@@ -11,11 +11,11 @@ from matplotlib.backends.backend_tkagg import (
 
 
 
-Coef_De_Charge = {'Photovoltaique':0.17, 'CSP': 0.90, 'Dechets':0.90, 'Eolienne offshore': 0.5}
+Coef_De_Charge = {'Photovoltaique':0.3, 'CSP': 0.90, 'Dechets':0.90, 'Eolienne offshore': 0.5}
 Prix_du_kw = {'Photovoltaique':1400, 'CSP': 9000, 'Dechets':15300, 'Eolienne offshore':8000}
 Duree_De_Vie = {'Photovoltaique':25, 'CSP': 27, 'Dechets':25, 'Eolienne offshore':17}
 Investissement = {'Photovoltaique':5400, 'CSP': 9000, 'Dechets':15300, 'Eolienne offshore':8000}
-Prix_Du_KWh = {'Photovoltaique':3.5, 'CSP': 19, 'Dechets':15.5, 'Eolienne offshore':10.5, "Fuel-based":28}
+Prix_Du_KWh = {'Photovoltaique':0.035, 'CSP': 0.19, 'Dechets':0.155, 'Eolienne offshore':0.105, "Fuel-based":0.20}
 Capacite = {'Photovoltaique':10, 'CSP': 12, 'Dechets':12, 'Eolienne offshore':11}
 taux_croiss_eco = 0.05
 Emission_CO2 = {'Photovoltaique':0.032, 'CSP': 0.032, 'Dechets':0.03, 'Eolienne offshore':0.001,"Heavy-Fuel":0.778,"Diesel oil":0.778,"Natural Gas":0.443,"Hydro":0.01}

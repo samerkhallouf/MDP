@@ -32,9 +32,12 @@ class Tdr_actu(tk.Tk):
 
 
         #Input labels
-        self.inv_input = tk.Entry(self, width = 30, textvariable = self.inv).grid(row = 3, column = 2, columnspan = 2)
-        self.kw_input = tk.Entry(self, width = 30, textvariable = self.prix_kwh).grid(row = 1, column = 2, columnspan = 2)
-        self.kw_installed_input = tk.Entry(self, width = 30, textvariable = self.kw_installed).grid(row = 2, column = 2, columnspan = 2)
+        self.inv_input = tk.Entry(self, width = 30, textvariable = self.inv)
+        self.inv_input.grid(row = 3, column = 2, columnspan = 2)
+        self.kw_input = tk.Entry(self, width = 30, textvariable = self.prix_kwh)
+        self.kw_input.grid(row = 1, column = 2, columnspan = 2)
+        self.kw_installed_input = tk.Entry(self, width = 30, textvariable = self.kw_installed)
+        self.kw_installed_input.grid(row = 2, column = 2, columnspan = 2)
 
         #buttons
         self.button = ttk.Button( self , text = "Calcul", command = self.calcul ).grid(row = 6, column = 3)
@@ -46,13 +49,20 @@ class Tdr_actu(tk.Tk):
     #Fonctions
     def Button(self,event):
         self.prix_kwh.set(str(Prix_Du_KWh[self.drop.get()]))
+        self.kw_input.delete('0',END)
+        self.kw_input.insert('0',self.prix_kwh.get())
         self.kw_installed.set(str(Capacite[self.drop.get()]))
+        self.kw_installed_input.delete('0',END)
+        self.kw_installed_input.insert('0',self.kw_installed.get())
 
 
     def calcul(self):
         if(self.drop.get() == ''):
             messagebox.showerror(title = "Error", message = "Please select an energy source!")
         else:
+            self.prix_kwh.set(self.kw_input.get())
+            self.inv.set(self.inv_input.get())
+            self.kw_installed.set(self.kw_installed_input.get())
             if(self.prix_kwh.get() == ''):
                 self.prix_kwh.set(str(Prix_du_kw[self.drop.get()]))
             if(self.kw_installed.get() == ''):

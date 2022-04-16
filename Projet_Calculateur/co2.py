@@ -28,8 +28,10 @@ class Co2(tk.Tk):
         self.drop.bind('<<ComboboxSelected>>', self.Button)
 
         #Input labels:
-        self.emissiom_input = tk.Entry(self, width = 30, textvariable = self.emission).grid(row = 1, column = 2, columnspan = 2)
-        self.energie_input = tk.Entry(self, width = 30, textvariable = self.energie).grid(row = 2, column = 2, columnspan = 2)
+        self.emissiom_input = tk.Entry(self, width = 30, textvariable = self.emission)
+        self.emissiom_input.grid(row = 1, column = 2, columnspan = 2)
+        self.energie_input = tk.Entry(self, width = 30, textvariable = self.energie)
+        self.energie_input.grid(row = 2, column = 2, columnspan = 2)
 
         #buttons
         self.button = ttk.Button( self , text = "Calcul", command = self.calcul_de_prix ).grid(row = 5, column = 3)
@@ -39,11 +41,17 @@ class Co2(tk.Tk):
     #Fonctions
     def Button(self,event):
         self.emission.set(str(Emission_CO2[self.drop.get()]))
+        self.emissiom_input.delete('0',END)
+        self.emissiom_input.insert('0',self.emission.get())
+
+
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
             messagebox.showerror(title = "Error", message = "Please select an energy source!")
         else:
+            self.emission.set(self.emissiom_input.get())
+            self.energie.set(self.energie_input.get())
             if(self.emission.get() == ''):
                 self.emission.set(str(Emission_CO2[self.drop.get()]))
             if( self.energie.get() == ''):
@@ -65,14 +73,6 @@ class Co2(tk.Tk):
             plot_window = tk.Tk()
             plot_window.title("Emission de CO2")
             co2 = float("%.3f" % float(self.emission_CO2.get()))
-            data = {
-                'Heavy-Fuel':Emission_CO2["Heavy-Fuel"]*float(self.energie.get()),
-                "Diesel oil":Emission_CO2["Diesel oil"]*float(self.energie.get()),
-                "Natural Gas" : Emission_CO2["Natural Gas"]*float(self.energie.get()),
-                self.drop.get(): co2
-            }
-            self.energies = self.data.keys()
-            self.emission = self.data.values()
             self.energies= []
             self.emissions = []
             for i in Emission_CO2.keys():
@@ -89,7 +89,7 @@ class Co2(tk.Tk):
             # create the toolbar
             NavigationToolbar2Tk(figure_canvas,plot_window)
             # create axes
-            axes = self.figure.add_subplot()
+            axes = figure.add_subplot()
             # create the barchart
             axes.bar(self.energies, self.emissions)
             axes.set_title('Emission de CO2')

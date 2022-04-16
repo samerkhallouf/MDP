@@ -15,14 +15,14 @@ class Kwh_actu(tk.Tk):
         self.label_coef = Label(self , text = "Coefficient de charge est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w', columnspan = 2)
         self.label_duree = Label(self , text = "La duree de vie est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w', columnspan = 2)
         self.label_taux = Label(self , text = "Le taux de croissance économique est : ", font = 'arial', bg = 'white'). grid(row = 5, column = 0, sticky = 'w', columnspan = 2)
-        prix = Label(self,text = "0.0 cents", font = 'arial', fg = 'red', bg = 'white')
-        prix.grid(row = 7,column = 2, sticky = 'w')
+        self.prix = Label(self,text = "0.0 cents", font = 'arial', fg = 'red', bg = 'white')
+        self.prix.grid(row = 7,column = 2, sticky = 'w')
 
         #ComboBox
         self.select = Label(self,text = 'Please select your energy source: ', font = 'arial', bg = 'white').grid(row = 1, column = 0, sticky = 'w')
-        drop = ttk.Combobox(self, width = 27, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
-        drop.grid(row = 1, column = 2, columnspan = 2)
-        drop.bind('<<ComboboxSelected>>', Button)
+        self.drop = ttk.Combobox(self, width = 27, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
+        self.drop.grid(row = 1, column = 2, columnspan = 2)
+        self.drop.bind('<<ComboboxSelected>>', self.Button)
 
         #variable
         self.duree = tk.StringVar()
@@ -30,13 +30,21 @@ class Kwh_actu(tk.Tk):
         self.coef = tk.StringVar()
         self.taux = tk.StringVar()
         self.prix_du_kwh = tk.StringVar()
-
+        self.duree.set('')
+        self.kw.set('')
+        self.coef.set('')
+        self.taux.set('')
+        self.prix_du_kwh.set('')
 
         #Input labels
-        self.kw_input = Entry(self, width = 30, textvariable = self.kw).grid(row = 2, column = 2, columnspan = 2)
-        self.coef_input = Entry(self, width = 30, textvariable = self.coef).grid(row = 3, column = 2, columnspan = 2)
-        self.duree_input = Entry(self, width = 30, textvariable = self.duree).grid(row = 4, column = 2, columnspan = 2)
-        self.taux_input = Entry(self, width = 30, textvariable = self.taux).grid(row = 5, column = 2, columnspan = 2)
+        self.kw_input = Entry(self, width = 30, textvariable = self.kw)
+        self.kw_input.grid(row = 2, column = 2, columnspan = 2)
+        self.coef_input = Entry(self, width = 30, textvariable = self.coef)
+        self.coef_input.grid(row = 3, column = 2, columnspan = 2)
+        self.duree_input = Entry(self, width = 30, textvariable = self.duree)
+        self.duree_input.grid(row = 4, column = 2, columnspan = 2)
+        self.taux_input = Entry(self, width = 30, textvariable = self.taux)
+        self.taux_input.grid(row = 5, column = 2, columnspan = 2)
 
         #buttons
         self.button = ttk.Button( self, text = "Calcul", command = self.calcul_de_prix ).grid(row = 6, column = 3)
@@ -45,16 +53,28 @@ class Kwh_actu(tk.Tk):
         self.plot_btn_total = ttk.Button(self,text = "Comparaison ", command = Comparaison_kwh).grid(row = 6, column = 1, sticky = 'w')
 
         #Fonctions
-    def Button(self):
+    def Button(self, event):
         self.kw.set(str(Prix_du_kw[self.drop.get()]))
+        self.kw_input.delete('0',tk.END)
+        self.kw_input.insert('0',self.kw.get())
         self.coef.set(str(Coef_De_Charge[self.drop.get()]))
+        self.coef_input.delete('0',tk.END)
+        self.coef_input.insert('0',self.coef.get())
         self.duree.set(str(Duree_De_Vie[self.drop.get()]))
+        self.duree_input.delete('0',tk.END)
+        self.duree_input.insert('0',self.duree.get())
         self.taux.set(str(taux_croiss_eco))
+        self.taux_input.delete('0',tk.END)
+        self.taux_input.insert('0',self.taux.get())
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
             messagebox.showerror(title = "Error", message = "Please select an energy source!")
         else:
+            self.kw.set(self.kw_input.get())
+            self.coef.set(self.coef_input.get())
+            self.duree.set(self.duree_input.get())
+            self.taux.set(self.taux_input.get())
             if(self.kw.get() == ''):
                 self.kw.set(str(Prix_du_kw[self.drop.get()]))
             if(self.coef.get() == ''):
@@ -87,7 +107,7 @@ class Kwh_actu(tk.Tk):
             plot_window.title("Prix du KWh actualisé")
             prix_act = float("%.3f" % float(self.prix_du_kwh.get()))
             data = {
-                'Fuel-based': self.prix_kwh_fuel * 100,
+                'Fuel-based': Prix_Du_KWh["Fuel-based"],
                 self.drop.get(): prix_act
             }
             energies = data.keys()
