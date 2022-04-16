@@ -2,16 +2,22 @@ from tkinter import *
 import tkinter as tk
 from van import *
 from prix import *
+from co2 import *
+from temp import *
 from PIL import Image, ImageTk
 
 
 def window_van():
-    root.withdraw()
     Van()
 
+def window_temp():
+    Temp()
+
 def window_prix():
-    root.withdraw()
     Prix()
+
+def window_co2():
+    Co2()
 
 #Root window:
 root = tk.Tk()
@@ -32,7 +38,7 @@ label1.grid(row = 3,column = 1)
 
 img2= Image.open("MDP/Projet_Calculateur/image2.png")
 img2 = ImageTk.PhotoImage(img2.resize((150,150), Image.ANTIALIAS))
-image_tdr = Button(root, image = img2)
+image_tdr = Button(root, image = img2,command=window_temp)
 image_tdr.grid(row = 2,column = 2, pady=(50,10),padx=20)
 label2 = Label(root,text = "Temps de retour", font = 'arial', bg = 'white')
 label2.grid(row = 3,column = 2)
@@ -46,7 +52,7 @@ label3.grid(row = 3,column = 3)
 
 img4= Image.open("MDP/Projet_Calculateur/image4.png")
 img4 = ImageTk.PhotoImage(img4.resize((150,150), Image.ANTIALIAS))
-image_co2 = Button(root, image = img4)
+image_co2 = Button(root, image = img4, command=window_co2)
 image_co2.grid(row = 2,column = 4, pady=(50,10), padx=20)
 label4 = Label(root,text = "Emission CO2", font = 'arial', bg = 'white')
 label4.grid(row = 3,column = 4)

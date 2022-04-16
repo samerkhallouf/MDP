@@ -6,7 +6,7 @@ class Kwh_actu(tk.Tk):
         self.geometry("550x200")
         self.title("Prix du KWh")
         self.configure(bg = 'white')
-        self.protocol("WM_DELETE_WINDOW", self.quit_me)
+       
 
         #labels
         label = Label(self,text = "Le prix du KWh est", font = 'arial', bg = 'white')
@@ -117,7 +117,4 @@ class Kwh_actu(tk.Tk):
 
 
     
-    def quit_me(self):
-        print('quit')
-        self.quit()
-        self.destroy()
+  
