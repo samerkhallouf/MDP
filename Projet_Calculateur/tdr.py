@@ -9,7 +9,7 @@ class Tdr(tk.Toplevel):
         self.title("Temps De Retour")
         self.configure(bg = 'white')
 
-        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = Image.open("bg.png")
         self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
         self.la = Label(self, image = self.bg)
         self.la.place(x = 0, y = 0)
@@ -54,12 +54,10 @@ class Tdr(tk.Toplevel):
 
     #Fonctions
     def Button(self,event):
-        self.prix_kwh.set(str(Prix_Du_KWh[self.drop.get()]))
         self.kw_input.delete('0',END)
-        self.kw_input.insert('0',self.prix_kwh.get())
-        self.kw_installed.set(str(Capacite[self.drop.get()]))
+        self.kw_input.insert('0',str(Prix_Du_KWh[self.drop.get()]))
         self.kw_installed_input.delete('0',END)
-        self.kw_installed_input.insert('0',self.kw_installed.get())
+        self.kw_installed_input.insert('0',str(Capacite[self.drop.get()]))
 
 
     def calcul(self):

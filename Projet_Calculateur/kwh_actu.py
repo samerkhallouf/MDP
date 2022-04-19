@@ -5,10 +5,10 @@ class Kwh_actu(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("800x550")
-        self.title("Prix du KWh")
+        self.title("Prix du KWh actualisé")
         self.configure(bg = 'white')
        
-        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = Image.open("bg.png")
         self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
         self.la = Label(self, image = self.bg)
         self.la.place(x = 0, y = 0)
@@ -59,18 +59,15 @@ class Kwh_actu(tk.Toplevel):
 
         #Fonctions
     def Button(self, event):
-        self.kw.set(str(Prix_du_kw[self.drop.get()]))
         self.kw_input.delete('0',tk.END)
-        self.kw_input.insert('0',self.kw.get())
-        self.coef.set(str(Coef_De_Charge[self.drop.get()]))
+        self.kw_input.insert('0',str(Prix_du_kw[self.drop.get()]))
         self.coef_input.delete('0',tk.END)
-        self.coef_input.insert('0',self.coef.get())
-        self.duree.set(str(Duree_De_Vie[self.drop.get()]))
+        self.coef_input.insert('0',str(Coef_De_Charge[self.drop.get()]))
         self.duree_input.delete('0',tk.END)
-        self.duree_input.insert('0',self.duree.get())
-        self.taux.set(str(taux_croiss_eco))
+        self.duree_input.insert('0',str(Duree_De_Vie[self.drop.get()]))
         self.taux_input.delete('0',tk.END)
-        self.taux_input.insert('0',self.taux.get())
+        self.taux_input.insert('0',str(taux_croiss_eco))
+
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
@@ -101,7 +98,7 @@ class Kwh_actu(tk.Toplevel):
         self.kw.set('')
         self.coef.set('')
         self.duree.set('')
-        self.taux('')
+        self.taux.set('')
 
     def graphe(self):
         if(self.prix_du_kwh.get() == ''):

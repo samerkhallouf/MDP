@@ -6,10 +6,10 @@ class Co2(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("800x550")
-        self.title("Prix du KWh")
+        self.title("Emission de CO2")
         self.configure(bg = 'white')
         
-        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = Image.open("bg.png")
         self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
         self.la = Label(self, image = self.bg)
         self.la.place(x = 0, y = 0)
@@ -46,9 +46,8 @@ class Co2(tk.Toplevel):
         self.plot_total_btn = ttk.Button(self,text = "Emission totale", command = Comparaison_CO2,width=50).grid(row = 7, column = 2,columnspan=2,pady=(10,20))
     #Fonctions
     def Button(self,event):
-        self.emission.set(str(Emission_CO2[self.drop.get()]))
         self.emissiom_input.delete('0',END)
-        self.emissiom_input.insert('0',self.emission.get())
+        self.emissiom_input.insert('0',str(Emission_CO2[self.drop.get()]))
 
 
 

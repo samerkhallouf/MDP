@@ -11,7 +11,7 @@ class Prix(tk.Toplevel):
         self.title("Prix du KWh")
         self.configure(bg = 'white')
 
-        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = Image.open("bg.png")
         self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
         self.la = Label(self, image = self.bg)
         self.la.place(x = 0, y = 0)

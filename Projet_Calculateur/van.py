@@ -8,7 +8,7 @@ class Van(tk.Toplevel):
         self.title("Valeur actuelle nette")
         self.configure(bg = 'white')
         
-        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = Image.open("bg.png")
         self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
         self.la = Label(self, image = self.bg)
         self.la.place(x = 0, y = 0)
@@ -52,16 +52,12 @@ class Van(tk.Toplevel):
 
         #Fonctions
     def Button(self,event):
-        self.kwh.set(str(Prix_Du_KWh[self.drop.get()]))
         self.kwh_input.delete('0',END)
-        self.kwh_input.insert('0', self.kwh.get())
-        self.taux.set(taux_croiss_eco)
+        self.kwh_input.insert('0', str(Prix_Du_KWh[self.drop.get()]))
         self.taux_input.delete('0',END)
-        self.taux_input.insert('0', self.taux.get())
-        self.inv.set(str(Investissement[self.drop.get()]))
+        self.taux_input.insert('0', taux_croiss_eco)
         self.inv_input.delete('0',END)
-        self.inv_input.insert('0', self.inv.get())
-
+        self.inv_input.insert('0', str(Investissement[self.drop.get()]))
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
