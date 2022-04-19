@@ -1,26 +1,31 @@
 from Variables_Fixes import *
+from PIL import Image, ImageTk 
 
-class Kwh_actu(tk.Tk):
+class Kwh_actu(tk.Toplevel):
     def __init__(self):
         super().__init__()
-        self.geometry("550x200")
+        self.geometry("800x550")
         self.title("Prix du KWh")
         self.configure(bg = 'white')
        
-
+        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
+        self.la = Label(self, image = self.bg)
+        self.la.place(x = 0, y = 0)
+        
         #labels
-        label = Label(self,text = "Le prix du KWh est", font = 'arial', bg = 'white')
-        label.grid(row = 7,column = 0, sticky = 'e')
-        self.label_kw = Label(self , text = "Prix du KW est(en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w', columnspan = 2)
-        self.label_coef = Label(self , text = "Coefficient de charge est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w', columnspan = 2)
-        self.label_duree = Label(self , text = "La duree de vie est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w', columnspan = 2)
-        self.label_taux = Label(self , text = "Le taux de croissance économique est : ", font = 'arial', bg = 'white'). grid(row = 5, column = 0, sticky = 'w', columnspan = 2)
+        label = Label(self,text = "Le prix du KWh actualisé est :", font = 'arial', bg = 'white')
+        label.grid(row = 7,column = 0, sticky = 'e',columnspan=2)
+        self.label_kw = Label(self , text = "Prix du KW est(en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w', columnspan = 2,padx=30,pady=(0,20))
+        self.label_coef = Label(self , text = "Coefficient de charge est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w', columnspan = 2,padx=30,pady=(0,20))
+        self.label_duree = Label(self , text = "La duree de vie est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w', columnspan = 2,padx=30,pady=(0,20))
+        self.label_taux = Label(self , text = "Le taux de croissance économique est : ", font = 'arial', bg = 'white'). grid(row = 5, column = 0, sticky = 'w', columnspan = 2,padx=30,pady=(0,20))
         self.prix = Label(self,text = "0.0 cents", font = 'arial', fg = 'red', bg = 'white')
         self.prix.grid(row = 7,column = 2, sticky = 'w')
 
         #ComboBox
-        self.select = Label(self,text = 'Please select your energy source: ', font = 'arial', bg = 'white').grid(row = 1, column = 0, sticky = 'w')
-        self.drop = ttk.Combobox(self, width = 27, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
+        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 1, column = 0,padx=30,pady=(30,15))
+        self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 1, column = 2, columnspan = 2)
         self.drop.bind('<<ComboboxSelected>>', self.Button)
 
@@ -37,20 +42,20 @@ class Kwh_actu(tk.Tk):
         self.prix_du_kwh.set('')
 
         #Input labels
-        self.kw_input = Entry(self, width = 30, textvariable = self.kw)
+        self.kw_input = Entry(self, width = 50, textvariable = self.kw)
         self.kw_input.grid(row = 2, column = 2, columnspan = 2)
-        self.coef_input = Entry(self, width = 30, textvariable = self.coef)
+        self.coef_input = Entry(self, width = 50, textvariable = self.coef)
         self.coef_input.grid(row = 3, column = 2, columnspan = 2)
-        self.duree_input = Entry(self, width = 30, textvariable = self.duree)
+        self.duree_input = Entry(self, width = 50, textvariable = self.duree)
         self.duree_input.grid(row = 4, column = 2, columnspan = 2)
-        self.taux_input = Entry(self, width = 30, textvariable = self.taux)
+        self.taux_input = Entry(self, width = 50, textvariable = self.taux)
         self.taux_input.grid(row = 5, column = 2, columnspan = 2)
 
         #buttons
-        self.button = ttk.Button( self, text = "Calcul", command = self.calcul_de_prix ).grid(row = 6, column = 3)
-        self.reset_btn = ttk.Button(self, text = "Reset", command = self.reset).grid(row = 6, column = 2)
-        self.plot_btn = ttk.Button(self,text = "Graphe", command = self.graphe).grid(row = 6, column = 0, sticky = 'w')
-        self.plot_btn_total = ttk.Button(self,text = "Comparaison ", command = Comparaison_kwh).grid(row = 6, column = 1, sticky = 'w')
+        self.button = ttk.Button( self, text = "Calcul", command = self.calcul_de_prix ).grid(row = 6, column = 3,pady=(15,10))
+        self.reset_btn = ttk.Button(self, text = "Reset", command = self.reset).grid(row = 6, column = 2,pady=(15,10))
+        self.plot_btn = ttk.Button(self,text = "Graphe", command = self.graphe,width=50).grid(row = 8, column = 0,pady=(10,20),columnspan=2)
+        self.plot_total_btn = ttk.Button(self,text = "Comparaison totale", command = Comparaison_kwh,width=50).grid(row = 8, column = 2,columnspan=2,pady=(10,20))
 
         #Fonctions
     def Button(self, event):
@@ -69,7 +74,7 @@ class Kwh_actu(tk.Tk):
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
-            messagebox.showerror(title = "Error", message = "Please select an energy source!")
+            messagebox.showerror(title = "Erreur", message = "Choisissez votre source d'énergie! ")
         else:
             self.kw.set(self.kw_input.get())
             self.coef.set(self.coef_input.get())

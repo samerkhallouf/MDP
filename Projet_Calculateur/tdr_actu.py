@@ -1,26 +1,32 @@
 from Variables_Fixes import *
+from PIL import Image, ImageTk 
 
-class Tdr_actu(tk.Tk):
+class Tdr_actu(tk.Toplevel):
     def __init__(self):
         super().__init__()
-        self.geometry("450x175")
+        self.geometry("800x550")
         self.title("Temps De Retour Actualisé")
         self.configure(bg = 'white')
 
+        self.bg = Image.open("MDP/Projet_Calculateur/bg.png")
+        self.bg = ImageTk.PhotoImage(self.bg.resize((800,550), Image.ANTIALIAS))
+        self.la = Label(self, image = self.bg)
+        self.la.place(x = 0, y = 0)
+
         #labels
-        self.label_KW = Label(self,text = "Le prix du KWh est:", font = 'arial', bg = 'white')
-        self.label_KW.grid(row = 1,column = 0, sticky = 'w')
-        self.label = Label(self,text = "Le temps de retour est", font = 'arial', bg = 'white')
-        self.label.grid(row = 7,column = 0, sticky = 'e')
-        self.label_inv = Label(self , text = "Investissement total (en $) : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w')
-        self.label_KW_installed = Label(self , text = "La capacité est : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w')
+        self.label_KW = Label(self,text = "Le prix du KWh est :", font = 'arial', bg = 'white')
+        self.label_KW.grid(row = 1,column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label = Label(self,text = "Le temps de retour actualisé :", font = 'arial', bg = 'white')
+        self.label.grid(row = 7,column = 0, sticky = 'e',columnspan=2)
+        self.label_inv = Label(self , text = "Investissement total (en $) : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label_KW_installed = Label(self , text = "La capacité est : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=30,pady=(0,20))
 
         self.prix = Label(self,text = "0.0 année", font = 'arial', fg = 'red', bg = 'white')
         self.prix.grid(row = 7,column = 2, sticky = 'w')
 
         #ComboBox
-        self.select = Label(self,text = 'Please select your energy source: ', font = 'arial', bg = 'white').grid(row = 0, column = 0)
-        self.drop = ttk.Combobox(self, width = 27, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
+        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 0, column = 0,padx=30,pady=(30,15))
+        self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 0, column = 2, columnspan = 2)
         self.drop.bind('<<ComboboxSelected>>', self.Button)
 
@@ -32,18 +38,19 @@ class Tdr_actu(tk.Tk):
 
 
         #Input labels
-        self.inv_input = tk.Entry(self, width = 30, textvariable = self.inv)
+        self.inv_input = tk.Entry(self, width = 50, textvariable = self.inv)
         self.inv_input.grid(row = 3, column = 2, columnspan = 2)
-        self.kw_input = tk.Entry(self, width = 30, textvariable = self.prix_kwh)
+        self.kw_input = tk.Entry(self, width = 50, textvariable = self.prix_kwh)
         self.kw_input.grid(row = 1, column = 2, columnspan = 2)
-        self.kw_installed_input = tk.Entry(self, width = 30, textvariable = self.kw_installed)
+        self.kw_installed_input = tk.Entry(self, width = 50, textvariable = self.kw_installed)
         self.kw_installed_input.grid(row = 2, column = 2, columnspan = 2)
 
         #buttons
-        self.button = ttk.Button( self , text = "Calcul", command = self.calcul ).grid(row = 6, column = 3)
-        self.reset_btn = ttk.Button(self, text = "Reset", command = self.reset).grid(row = 6, column = 2)
-        self.plot_btn = ttk.Button(self,text = "Graphe", command = self.graphe).grid(row = 6, column = 0, sticky = 'w')
-        self.plot_btn_total = ttk.Button(self,text = "Comparaison ", command = Comparaison_TR).grid(row = 6, column = 1, sticky = 'w')
+        self.button = ttk.Button( self , text = "Calcul", command = self.calcul ).grid(row = 6, column = 3,pady=(15,10))
+        self.reset_btn = ttk.Button(self, text = "Reset", command = self.reset).grid(row = 6, column = 2,pady=(15,10))
+        self.plot_btn = ttk.Button(self,text = "Graphe", command = self.graphe,width=50).grid(row = 8, column = 0,pady=(10,20),columnspan=2)
+        self.plot_total_btn = ttk.Button(self,text = "Comparaison", command = Comparaison_TR,width=50).grid(row = 8, column = 2,columnspan=2,pady=(10,20))
+
 
 
     #Fonctions
@@ -58,7 +65,7 @@ class Tdr_actu(tk.Tk):
 
     def calcul(self):
         if(self.drop.get() == ''):
-            messagebox.showerror(title = "Error", message = "Please select an energy source!")
+            messagebox.showerror(title = "Erreur", message = "Choisissez votre source d'énergie! ")
         else:
             self.prix_kwh.set(self.kw_input.get())
             self.inv.set(self.inv_input.get())
@@ -68,12 +75,12 @@ class Tdr_actu(tk.Tk):
             if(self.kw_installed.get() == ''):
                 self.kw_installed.set(str(Capacite[self.drop.get()]))
             if(self.inv.get() == ''):
-                messagebox.showerror('Erreur!', message= "Veuillez inserer l'invesstissement ")
+                messagebox.showerror('Erreur!', message= "Veuillez insérer l'invesstissement ")
             production = float(self.kw_installed.get())*8760*Coef_De_Charge[self.drop.get()]
             gain = production *(Prix_Du_KWh["Fuel-based"] - float(self.prix_kwh.get()))
             facteur = 1- (float(self.inv.get())*(taux_croiss_eco/(1+taux_croiss_eco))/gain)
             if(facteur <0):
-                messagebox.showerror("Le temps de retour ne peut pas etre calculer!")
+                messagebox.showerror("Le temps de retour ne peut pas être calculer!")
                 exit(1)
             else:
                 self.TR.set(str(log(1-facteur)/log(1/(1+taux_croiss_eco))))
