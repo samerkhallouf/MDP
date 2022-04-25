@@ -17,15 +17,14 @@ class Temp(tk.Toplevel):
         self.la.place(x = 0, y = 0)
 
         self.label = Label(self,text = "Choisissez:", font = ('arial',24), bg = 'white')
-        self.label.grid(row = 1,column=0,columnspan=2,pady=50,padx=210)
-
+        self.label.grid(row = 1,column=0,columnspan=2,pady=50,padx=235)
 
         self.button1 = Button(self,text = "Temps de retour", font = 'arial', width=35,bg = 'white',command=self.window_tdr)
-        self.button1.grid(row = 2,column = 0,pady=20,padx=210)
+        self.button1.grid(row = 2,column = 0,pady=20,padx=235)
 
 
         self.button2 = Button(self,text = "Temps de retour actualisé", font = 'arial',width=35, bg = 'white',command=self.window_tdr_actu)
-        self.button2.grid(row = 3,column = 0,pady=20,padx=210)
+        self.button2.grid(row = 3,column = 0,pady=20,padx=235)
 
 
     def window_tdr(self):

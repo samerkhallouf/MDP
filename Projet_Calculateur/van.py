@@ -16,15 +16,15 @@ class Van(tk.Toplevel):
         #labels
         self.label = Label(self,text = "La valeur actuelle nette est", font = 'arial', bg = 'white')
         self.label.grid(row = 7,column = 0, sticky = 'e',columnspan=2)
-        self.label_kwh = Label(self , text = "Prix du KWh est (en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_taux = Label(self , text = "Le taux de croissance économique est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_inv = Label(self , text = "L'investissement est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_capacite= Label(self,text= "La capacité installé :", font='arial', bg = 'white'). grid(row = 5, column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label_kwh = Label(self , text = "Prix du KWh est (en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_taux = Label(self , text = "Le taux d'actualisation est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_inv = Label(self , text = "L'investissement est(en $) : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_capacite= Label(self,text= "La capacité installé(en kW) :", font='arial', bg = 'white'). grid(row = 5, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
         self.valeur = Label(self,text = "0.0$", font = 'arial', fg = 'red', bg = 'white')
         self.valeur.grid(row = 7,column = 2, sticky = 'w')
 
         #ComboBox
-        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 1, column = 0,sticky='w',padx=30,pady=(30,15))
+        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 1, column = 0,sticky='w',padx=(70,100),pady=(30,15))
         self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 1, column = 2,columnspan=2,pady=(30,15))
         self.drop.bind('<<ComboboxSelected>>', self.Button)
@@ -58,6 +58,8 @@ class Van(tk.Toplevel):
         self.taux_input.insert('0', taux_croiss_eco)
         self.inv_input.delete('0',END)
         self.inv_input.insert('0', str(Investissement[self.drop.get()]))
+        self.capacite_entry.delete('0',END)
+        self.capacite_entry.insert('0',Capacite[self.drop.get()])
 
     def calcul_de_prix(self):
         if(self.drop.get() == ''):
@@ -80,9 +82,14 @@ class Van(tk.Toplevel):
                 gain=production*(Prix_Du_KWh["Fuel-based"] - float(self.kwh.get()))
                 facteur=(1-(1/(1+float(self.taux.get()))**31))/float(self.taux.get())
                 van=gain*facteur-float(self.inv.get())
-                self.valeur['text'] = str("%.3f $" %van)
+                if(van < 0):
+                    if(self.drop.get() == 'Dechets'):
+                        messagebox.showinfo('Attention!', message = "Il faut noter que cette installation résout 2 problèmes différents : électricité et la crise de déchets")
+                    else:
+                        messagebox.showinfo("Attention!", message="Il faut prendre aussi en considération l'absence d'émssion de CO2")
+                self.valeur['text'] = str("%.0f $" %van)
             except ZeroDivisionError:
-                messagebox.showerror('Division par 0', message =  "La taux de croissance économique ne peut pas etre nul!")
+                messagebox.showerror('Division par 0', message =  "La taux d'actualisation ne peut pas etre nul!")
 
     def reset(self):
         self.drop.set('')

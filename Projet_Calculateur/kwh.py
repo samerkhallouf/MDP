@@ -16,14 +16,14 @@ class Kwh(tk.Toplevel):
         #labels
         label = Label(self,text = "Le prix du KWh est :", font = 'arial', bg = 'white')
         label.grid(row = 6,column = 0, sticky = 'e',columnspan=2)
-        self.label_kw = Label(self , text = "Prix du KW est(en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_coef = Label(self , text = "Coefficient de charge est : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_duree = Label(self , text = "La duree de vie est : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label_kw = Label(self , text = "Prix du KW est(en $) : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_coef = Label(self , text = "Coefficient de charge : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_duree = Label(self , text = "La duree de vie (en année) : ", font = 'arial', bg = 'white'). grid(row = 4, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
         self.prix = Label(self,text = "0.0 cents", font = 'arial', fg = 'red', bg = 'white')
         self.prix.grid(row = 6,column = 2, sticky = 'w')
 
          #ComboBox
-        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 1, column = 0,padx=30,pady=(30,15))
+        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 1, column = 0,padx=(70,100),pady=(30,15))
         self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 1, column = 2, columnspan = 2)
         self.drop.bind('<<ComboboxSelected>>', self.Button)
@@ -89,6 +89,7 @@ class Kwh(tk.Toplevel):
         self.kw.set('')
         self.coef.set('')
         self.duree.set('')
+        self.prix["text"] = "0.0 cents"
 
     def graphe(self):
         if(self.prix_du_kwh.get() == ''):
@@ -120,7 +121,7 @@ class Kwh(tk.Toplevel):
             # create the barchart
             axes.bar(energies, cout)
             axes.set_title('Prix du KWh actualisé')
-            axes.set_ylabel('Cout')
+            axes.set_ylabel('Cout(en $)')
 
             figure_canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 

@@ -62,7 +62,7 @@ img4= Image.open("image4.png")
 img4 = ImageTk.PhotoImage(img4.resize((150,150), Image.ANTIALIAS))
 image_co2 = Button(root, image = img4, command=window_co2)
 image_co2.grid(row = 2,column = 4, pady=(50,10), padx=20)
-label4 = Label(root,text = "Emission CO2", font = 'arial', bg = 'white')
+label4 = Label(root,text = "Empreinte de CO2", font = 'arial', bg = 'white')
 label4.grid(row = 3,column = 4)
 
 def quit_me():

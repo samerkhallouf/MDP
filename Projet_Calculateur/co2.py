@@ -6,7 +6,7 @@ class Co2(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.geometry("800x550")
-        self.title("Emission de CO2")
+        self.title("Empreinte de CO2")
         self.configure(bg = 'white')
         
         self.bg = Image.open("bg.png")
@@ -15,9 +15,9 @@ class Co2(tk.Toplevel):
         self.la.place(x = 0, y = 0)
 
         #Labels:
-        self.label = Label(self,text = "Emission (Tonnes/MWh produit): ", font = 'arial', bg = 'white')
-        self.label.grid(row = 1,column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_energie = Label(self , text = "Energie (MWh produit): ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label = Label(self,text = "Empreinte (Tonnes/MWh produit): ", font = 'arial', bg = 'white')
+        self.label.grid(row = 1,column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_energie = Label(self , text = "Energie (MWh produit): ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
         self.emission_total = Label(self,text = "0.0 g", font = 'arial', fg = 'red', bg = 'white')
         self.emission_total.grid(row = 6,column = 2, sticky = 'w')
         self.label_emission = Label(self,text = "Le taux d'emission en CO2 est de ", font = 'arial', bg = 'white').grid(row = 6, column = 0, sticky = 'e',columnspan=2)
@@ -28,7 +28,7 @@ class Co2(tk.Toplevel):
         self.emission_CO2 = StringVar()
 
         #ComboBox
-        self.select = Label(self,text = "Choisissez votre source d'énergie: ", font = 'arial', bg = 'white').grid(row = 0, column = 0,padx=30,pady=(30,15))
+        self.select = Label(self,text = "Choisissez votre source d'énergie: ", font = 'arial', bg = 'white').grid(row = 0, column = 0,padx=(70,100),pady=(30,15))
         self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 0, column = 2, columnspan = 2)
         self.drop.bind('<<ComboboxSelected>>', self.Button)
@@ -43,7 +43,7 @@ class Co2(tk.Toplevel):
         self.button = ttk.Button( self , text = "Calcul", command = self.calcul_de_prix ).grid(row = 5, column = 3,pady=(15,10))
         self.reset_btn = ttk.Button(self, text = "Reset", command = self.reset).grid(row = 5, column = 2,pady=(15,10))
         self.plot_btn = ttk.Button(self,text = "Graphe", command = self.graphe,width=50).grid(row = 7, column = 0,pady=(10,20),columnspan=2)
-        self.plot_total_btn = ttk.Button(self,text = "Emission totale", command = Comparaison_CO2,width=50).grid(row = 7, column = 2,columnspan=2,pady=(10,20))
+        self.plot_total_btn = ttk.Button(self,text = "Empreinte totale", command = Comparaison_CO2,width=50).grid(row = 7, column = 2,columnspan=2,pady=(10,20))
     #Fonctions
     def Button(self,event):
         self.emissiom_input.delete('0',END)
@@ -76,7 +76,8 @@ class Co2(tk.Toplevel):
 
         else:
             plot_window = tk.Tk()
-            plot_window.title("Emission de CO2")
+            plot_window.title("Empreinte de CO2")
+            plot_window.geometry("1080x330")
             co2 = float("%.3f" % float(self.emission_CO2.get()))
             self.energies= []
             self.emissions = []
@@ -97,8 +98,8 @@ class Co2(tk.Toplevel):
             axes = figure.add_subplot()
             # create the barchart
             axes.bar(self.energies, self.emissions)
-            axes.set_title('Emission de CO2')
-            axes.set_ylabel('Emission (Tonnes)')
+            axes.set_title('Empreinte annuelle de CO2')
+            axes.set_ylabel('Empreinte (Tonnes)')
 
             figure_canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 

@@ -14,18 +14,17 @@ class Tdr_actu(tk.Toplevel):
         self.la.place(x = 0, y = 0)
 
         #labels
-        self.label_KW = Label(self,text = "Le prix du KWh est :", font = 'arial', bg = 'white')
-        self.label_KW.grid(row = 1,column = 0, sticky = 'w',padx=30,pady=(0,20))
+        self.label_KW = Label(self,text = "Le prix du KWh(en $) :", font = 'arial', bg = 'white')
+        self.label_KW.grid(row = 1,column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
         self.label = Label(self,text = "Le temps de retour actualisé :", font = 'arial', bg = 'white')
         self.label.grid(row = 7,column = 0, sticky = 'e',columnspan=2)
-        self.label_inv = Label(self , text = "Investissement total (en $) : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=30,pady=(0,20))
-        self.label_KW_installed = Label(self , text = "La capacité est : ", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=30,pady=(0,20))
-
+        self.label_inv = Label(self , text = "Investissement total (en $) : ", font = 'arial', bg = 'white'). grid(row = 3, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
+        self.label_KW_installed = Label(self , text = "La capacitée est (en kW) :", font = 'arial', bg = 'white'). grid(row = 2, column = 0, sticky = 'w',padx=(70,100),pady=(0,20))
         self.prix = Label(self,text = "0.0 année", font = 'arial', fg = 'red', bg = 'white')
         self.prix.grid(row = 7,column = 2, sticky = 'w')
 
         #ComboBox
-        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 0, column = 0,padx=30,pady=(30,15))
+        self.select = Label(self,text = "Choisissez votre source d'énergie : ", font = 'arial', bg = 'white').grid(row = 0, column = 0,padx=(70,100),pady=(30,15))
         self.drop = ttk.Combobox(self, width = 47, values = ["Photovoltaique","CSP","Dechets","Eolienne offshore"], state = "readonly" )
         self.drop.grid(row = 0, column = 2, columnspan = 2)
         self.drop.bind('<<ComboboxSelected>>', self.Button)
@@ -59,6 +58,8 @@ class Tdr_actu(tk.Toplevel):
         self.kw_input.insert('0',str(Prix_Du_KWh[self.drop.get()]))
         self.kw_installed_input.delete('0',END)
         self.kw_installed_input.insert('0',str(Capacite[self.drop.get()]))
+        self.inv_input.delete('0',END)
+        self.inv_input.insert('0',str(Investissement[self.drop.get()]))
 
 
     def calcul(self):
@@ -73,16 +74,15 @@ class Tdr_actu(tk.Toplevel):
             if(self.kw_installed.get() == ''):
                 self.kw_installed.set(str(Capacite[self.drop.get()]))
             if(self.inv.get() == ''):
-                messagebox.showerror('Erreur!', message= "Veuillez insérer l'invesstissement ")
+                self.inv.set(Investissement[self.drop.get()])
             production = float(self.kw_installed.get())*8760*Coef_De_Charge[self.drop.get()]
             gain = production *(Prix_Du_KWh["Fuel-based"] - float(self.prix_kwh.get()))
             facteur = 1- (float(self.inv.get())*(taux_croiss_eco/(1+taux_croiss_eco))/gain)
             if(facteur <0):
-                messagebox.showerror("Le temps de retour ne peut pas être calculer!")
-                exit(1)
+                messagebox.showerror("Erreur!", message = "Le temps de retour ne peut pas être calculer!")
             else:
-                self.TR.set(str(log(1-facteur)/log(1/(1+taux_croiss_eco))))
-                self.prix['text'] = "%.3f année(s)."%float(self.TR.get())
+                self.TR.set(str(log(facteur)/log(1/(1+taux_croiss_eco))))
+                self.prix['text'] = "%.1f année(s)."%float(self.TR.get())
 
 
     def reset(self):
@@ -90,6 +90,7 @@ class Tdr_actu(tk.Toplevel):
         self.inv.set('')
         self.prix_kwh.set('')
         self.kw_installed.set('')
+        self.prix["text"] = "0.0 année(s)"
 
     def graphe(self):
         if(self.TR.get() == ''):
@@ -97,7 +98,7 @@ class Tdr_actu(tk.Toplevel):
 
         else:
             plot_window = tk.Tk()
-            plot_window.title("Prix du KWh actualisé")
+            plot_window.title("Temps de retour actualisé")
             tr = float("%.3f" % float(self.TR.get()))
             data = {
                 'Fuel-based': Temps_de_retour["Fuel-based"],
